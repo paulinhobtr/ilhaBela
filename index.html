@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Encontre passeios de barco e experiências marítimas em Ilhabela.">
+  <title>Maré Ilhabela | Encontre seu passeio</title>
+  <style>
+    :root {
+      --navy: #092f43;
+      --blue: #087e9b;
+      --aqua: #d9f4f3;
+      --sand: #f7f4ed;
+      --ink: #173342;
+      --muted: #607783;
+      --white: #fff;
+      --line: #dce8e9;
+      --shadow: 0 16px 42px rgba(9, 47, 67, .10);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: #fbfdfc;
+      line-height: 1.5;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input, select { font: inherit; }
+    button, .button { cursor: pointer; }
+    .container { width: min(1160px, calc(100% - 40px)); margin: 0 auto; }
+    .topbar { background: var(--navy); color: #e8fbff; font-size: .86rem; padding: 9px 0; }
+    .topbar .container { display: flex; justify-content: space-between; gap: 14px; flex-wrap: wrap; }
+    header { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,.94); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(220,232,233,.8); }
+    .nav { display: flex; align-items: center; justify-content: space-between; min-height: 76px; gap: 20px; }
+    .brand { display: flex; align-items: center; gap: 11px; font-weight: 850; color: var(--navy); letter-spacing: -.04em; font-size: 1.2rem; }
+    .brand-mark { display: grid; place-items: center; width: 42px; height: 42px; color: white; background: linear-gradient(145deg, #0aa4b5, #07546e); border-radius: 14px; }
+    .brand small { display: block; font-size: .67rem; letter-spacing: .12em; color: var(--muted); text-transform: uppercase; font-weight: 700; }
+    .nav-links { display: flex; align-items: center; gap: 26px; color: #385563; font-weight: 650; font-size: .94rem; }
+    .nav-links a:hover { color: var(--blue); }
+    .button { display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 999px; padding: 12px 19px; font-weight: 750; transition: transform .2s, background .2s; }
+    .button:hover { transform: translateY(-1px); }
+    .button-primary { color: white; background: var(--blue); box-shadow: 0 8px 20px rgba(8,126,155,.18); }
+    .button-primary:hover { background: #066a83; }
+    .button-light { color: var(--navy); background: white; }
+    .button-outline { color: var(--navy); border: 1px solid var(--line); background: white; }
+    .hero { position: relative; overflow: hidden; background: var(--navy); color: white; }
+    .hero-bg { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(5,35,51,.88) 0%, rgba(5,35,51,.64) 47%, rgba(5,35,51,.16) 100%), url('https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=2000&q=85') center 54%/cover; }
+    .hero-inner { position: relative; z-index: 1; padding: 88px 0 112px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; color: #a9eff0; text-transform: uppercase; letter-spacing: .14em; font-size: .75rem; font-weight: 850; }
+    h1 { margin: 18px 0; font-size: clamp(2.6rem, 5.8vw, 5rem); line-height: 1.02; letter-spacing: -.055em; max-width: 730px; }
+    .hero p { max-width: 570px; color: #e2f1f5; font-size: 1.12rem; margin: 0 0 28px; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .search-wrap { position: relative; z-index: 2; margin-top: -48px; }
+    .search-panel { display: grid; grid-template-columns: 1.3fr 1fr 1fr auto; align-items: end; gap: 14px; padding: 22px; background: white; border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+    .field label { display: block; margin: 0 0 7px; font-size: .78rem; color: var(--muted); font-weight: 800; }
+    .field input, .field select { width: 100%; min-height: 48px; padding: 0 13px; border: 1px solid var(--line); border-radius: 12px; background: #fbfdfd; color: var(--ink); outline: none; }
+    .field input:focus, .field select:focus { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(8,126,155,.12); }
+    section { padding: 76px 0; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 22px; margin-bottom: 28px; }
+    .section-kicker { color: var(--blue); text-transform: uppercase; font-size: .75rem; letter-spacing: .13em; font-weight: 850; }
+    h2 { color: var(--navy); font-size: clamp(1.8rem, 3vw, 2.65rem); letter-spacing: -.045em; line-height: 1.1; margin: 9px 0 0; }
+    .section-head p { color: var(--muted); max-width: 430px; margin: 0; }
+    .filters { display: flex; gap: 9px; flex-wrap: wrap; margin-bottom: 22px; }
+    .filter { border: 1px solid var(--line); border-radius: 999px; background: white; padding: 9px 15px; color: #46616d; font-weight: 750; }
+    .filter.active, .filter:hover { background: var(--navy); border-color: var(--navy); color: white; }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .card { overflow: hidden; background: white; border: 1px solid var(--line); border-radius: 20px; transition: transform .22s, box-shadow .22s; }
+    .card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .card-image { position: relative; height: 218px; background: #d8edf0; overflow: hidden; }
+    .card-image img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .4s; }
+    .card:hover .card-image img { transform: scale(1.04); }
+    .tag { position: absolute; left: 14px; top: 14px; border-radius: 999px; background: rgba(255,255,255,.95); color: var(--navy); padding: 7px 11px; font-size: .74rem; font-weight: 850; }
+    .card-content { padding: 18px; }
+    .card-title-row { display: flex; justify-content: space-between; align-items: start; gap: 12px; }
+    .card h3 { margin: 0; color: var(--navy); font-size: 1.15rem; letter-spacing: -.025em; }
+    .rating { color: #9a6a0a; font-size: .85rem; font-weight: 800; white-space: nowrap; }
+    .card-desc { color: var(--muted); margin: 9px 0 15px; font-size: .92rem; min-height: 44px; }
+    .meta { display: flex; flex-wrap: wrap; gap: 12px; color: #496773; font-size: .82rem; padding-bottom: 15px; border-bottom: 1px solid #edf2f2; }
+    .price-row { display: flex; align-items: end; justify-content: space-between; gap: 10px; padding-top: 15px; }
+    .price small { display: block; color: var(--muted); font-size: .75rem; }
+    .price strong { color: var(--navy); font-size: 1.35rem; letter-spacing: -.035em; }
+    .price strong span { font-size: .78rem; font-weight: 600; letter-spacing: 0; }
+    .price-note { margin-top: 12px; color: #6b7f87; font-size: .76rem; }
+    .empty { display: none; padding: 30px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: 18px; grid-column: 1 / -1; }
+    .how { background: var(--sand); }
+    .steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; margin-top: 32px; }
+    .step { padding: 24px; background: rgba(255,255,255,.8); border: 1px solid #e9e4d9; border-radius: 18px; }
+    .step-num { width: 42px; height: 42px; display: grid; place-items: center; border-radius: 13px; background: var(--aqua); color: var(--navy); font-weight: 900; }
+    .step h3 { color: var(--navy); margin: 17px 0 8px; }
+    .step p { color: var(--muted); margin: 0; font-size: .94rem; }
+    .banner { background: linear-gradient(120deg, #07506a, #087e9b); color: white; border-radius: 26px; padding: 34px; display: flex; justify-content: space-between; align-items: center; gap: 22px; }
+    .banner h2 { color: white; margin-top: 0; }
+    .banner p { color: #d7f3f5; margin-bottom: 0; max-width: 620px; }
+    footer { background: #062a3b; color: #d8e9ee; padding: 38px 0; }
+    .footer-inner { display: flex; justify-content: space-between; align-items: start; gap: 28px; flex-wrap: wrap; }
+    footer .brand { color: white; }
+    footer .brand small { color: #a6c1ca; }
+    footer p { max-width: 430px; color: #b8d0d7; font-size: .9rem; }
+    .footer-links { display: flex; gap: 18px; flex-wrap: wrap; font-size: .9rem; }
+    .copyright { border-top: 1px solid rgba(255,255,255,.13); margin-top: 25px; padding-top: 18px; color: #9fbac3; font-size: .8rem; }
+    dialog { width: min(520px, calc(100% - 28px)); padding: 0; border: 0; border-radius: 22px; box-shadow: 0 25px 90px rgba(0,0,0,.3); color: var(--ink); }
+    dialog::backdrop { background: rgba(3,25,37,.62); backdrop-filter: blur(3px); }
+    .modal-head { padding: 22px 24px; background: var(--navy); color: white; display: flex; align-items: start; justify-content: space-between; gap: 15px; }
+    .modal-head h3 { margin: 0; font-size: 1.3rem; }
+    .modal-head p { margin: 5px 0 0; color: #c7e4eb; font-size: .88rem; }
+    .close { border: 0; background: transparent; color: white; font-size: 1.6rem; line-height: 1; }
+    .modal-body { padding: 24px; }
+    .modal-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .modal-fields .full { grid-column: 1 / -1; }
+    .form-help { color: var(--muted); font-size: .82rem; margin: 12px 0 18px; }
+    .notice { display: none; margin-top: 14px; padding: 12px 14px; background: #e8f8f2; color: #176747; border-radius: 12px; font-size: .9rem; }
+    @media (max-width: 900px) {
+      .search-panel { grid-template-columns: repeat(2, 1fr); }
+      .cards { grid-template-columns: repeat(2, 1fr); }
+      .nav-links { gap: 14px; }
+    }
+    @media (max-width: 620px) {
+      .container { width: min(100% - 28px, 1160px); }
+      .topbar .container { justify-content: center; text-align: center; }
+      .nav { min-height: 66px; }
+      .nav-links a:not(.button) { display: none; }
+      .brand { font-size: 1.05rem; }
+      .brand-mark { width: 38px; height: 38px; }
+      .nav-links { gap: 0; }
+      .nav-links .button { padding: 10px 13px; font-size: .84rem; }
+      .hero-inner { padding: 70px 0 82px; }
+      .hero p { font-size: 1rem; }
+      .search-panel { grid-template-columns: 1fr; padding: 17px; }
+      section { padding: 56px 0; }
+      .section-head { display: block; }
+      .section-head p { margin-top: 12px; }
+      .cards, .steps { grid-template-columns: 1fr; }
+      .card-image { height: 230px; }
+      .banner { display: block; padding: 25px; }
+      .banner .button { margin-top: 20px; }
+      .modal-fields { grid-template-columns: 1fr; }
+      .modal-fields .full { grid-column: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="container">
+      <span> Descubra Ilhabela pelo mar</span>
+      <span>Encontre passeios para o seu próximo dia inesquecível</span>
+    </div>
+  </div>
+
+  <header>
+    <nav class="container nav" aria-label="Navegação principal">
+      <a class="brand" href="#inicio" aria-label="Maré Ilhabela, página inicial">
+        <span class="brand-mark">≈</span>
+        <span>maré <small>ILHABELA · PASSEIOS AQUÁTICOS</small></span>
+      </a>
+      <div class="nav-links">
+        <a href="#passeios">Passeios</a>
+        <a href="#como-funciona">Como funciona</a>
+        <a class="button button-primary" href="#passeios">Encontrar passeio</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-bg" aria-hidden="true"></div>
+      <div class="container hero-inner">
+        <span class="eyebrow">✦ Sua próxima aventura começa aqui</span>
+        <h1>Ilhabela fica ainda mais incrível vista do mar.</h1>
+        <p>Encontre passeios de barco, descubra praias especiais e escolha uma experiência para aproveitar a ilha no seu ritmo.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#passeios">Explorar passeios&nbsp; ↓</a>
+          <a class="button button-light" href="#como-funciona">Como funciona</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="container search-wrap">
+      <form class="search-panel" id="searchForm">
+        <div class="field">
+          <label for="tipo">Que passeio você procura?</label>
+          <select id="tipo">
+            <option value="todos">Todos os passeios</option>
+            <option value="lancha">Passeio de lancha</option>
+            <option value="escuna">Passeio de escuna</option>
+            <option value="privativo">Passeio privativo</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="data">Data desejada</label>
+          <input type="date" id="data" />
+        </div>
+        <div class="field">
+          <label for="pessoas">Passageiros</label>
+          <select id="pessoas">
+            <option value="1">1 pessoa</option>
+            <option value="2" selected>2 pessoas</option>
+            <option value="3">3 pessoas</option>
+            <option value="4">4 pessoas</option>
+            <option value="5">5 pessoas</option>
+            <option value="6">6 pessoas</option>
+            <option value="7">7 pessoas</option>
+            <option value="8">8 pessoas</option>
+            <option value="9">9 pessoas</option>
+            <option value="10">10 pessoas</option>
+          </select>
+        </div>
+        <button class="button button-primary" type="submit">Buscar</button>
+      </form>
+    </div>
+
+    <section id="passeios">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <span class="section-kicker">Escolha sua experiência</span>
+            <h2>Passeios para se apaixonar pela ilha</h2>
+          </div>
+          <p>Veja algumas opções ilustrativas. Datas, disponibilidade e preços reais serão conectados ao sistema de reservas na próxima etapa.</p>
+        </div>
+
+        <div class="filters" aria-label="Filtrar passeios">
+          <button class="filter active" data-filter="todos" type="button">Todos</button>
+          <button class="filter" data-filter="lancha" type="button">Lanchas</button>
+          <button class="filter" data-filter="escuna" type="button">Escunas</button>
+          <button class="filter" data-filter="privativo" type="button">Privativos</button>
+        </div>
+
+        <div class="cards" id="cards">
+          <article class="card" data-type="lancha" data-capacity="8">
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?auto=format&fit=crop&w=1000&q=85" alt="Lancha navegando em águas azuis" loading="lazy">
+              <span class="tag">Mais procurado</span>
+            </div>
+            <div class="card-content">
+              <div class="card-title-row"><h3>Rota das Águas Azuis</h3><span class="rating">★ 4,9</span></div>
+              <p class="card-desc">Um passeio de lancha para explorar o litoral e aproveitar paradas para banho.</p>
+              <div class="meta"><span>◷ Aproximadamente 4h</span><span>♧ Até 8 pessoas</span></div>
+              <div class="price-row"><div class="price"><small>A partir de</small><strong>R$ 250 <span>/ pessoa</span></strong></div><button class="button button-primary reserve-btn" data-name="Rota das Águas Azuis" type="button">Consultar</button></div>
+              <div class="price-note">Preço demonstrativo · depende da data e temporada.</div>
+            </div>
+          </article>
+
+          <article class="card" data-type="escuna" data-capacity="30">
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1000&q=85" alt="Passeio turístico de barco no mar" loading="lazy">
+              <span class="tag">Para compartilhar</span>
+            </div>
+            <div class="card-content">
+              <div class="card-title-row"><h3>Ilha em Boa Companhia</h3><span class="rating">★ 4,8</span></div>
+              <p class="card-desc">Curta a paisagem da ilha em um passeio coletivo, ideal para amigos e famílias.</p>
+              <div class="meta"><span>◷ Aproximadamente 5h</span><span>♧ Até 30 pessoas</span></div>
+              <div class="price-row"><div class="price"><small>A partir de</small><strong>R$ 120 <span>/ pessoa</span></strong></div><button class="button button-primary reserve-btn" data-name="Ilha em Boa Companhia" type="button">Consultar</button></div>
+              <div class="price-note">Preço demonstrativo · depende da data e temporada.</div>
+            </div>
+          </article>
+
+          <article class="card" data-type="privativo" data-capacity="10">
+            <div class="card-image">
+              <img src="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=1000&q=85" alt="Mar azul e costa tropical" loading="lazy">
+              <span class="tag">Experiência exclusiva</span>
+            </div>
+            <div class="card-content">
+              <div class="card-title-row"><h3>Seu Dia no Mar</h3><span class="rating">★ 5,0</span></div>
+              <p class="card-desc">Uma experiência privativa para aproveitar o mar com seu grupo e montar seu roteiro.</p>
+              <div class="meta"><span>◷ Roteiro combinado</span><span>♧ Até 10 pessoas</span></div>
+              <div class="price-row"><div class="price"><small>A partir de</small><strong>R$ 1.500 <span>/ grupo</span></strong></div><button class="button button-primary reserve-btn" data-name="Seu Dia no Mar" type="button">Consultar</button></div>
+              <div class="price-note">Preço demonstrativo · depende da data e temporada.</div>
+            </div>
+          </article>
+          <div class="empty" id="emptyState">Nenhum passeio corresponde aos filtros escolhidos. Tente outra opção.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="how" id="como-funciona">
+      <div class="container">
+        <div class="section-head">
+          <div><span class="section-kicker">Simples do começo ao fim</span><h2>Seu passeio em três passos</h2></div>
+          <p>Uma experiência de reserva clara, para você planejar o passeio com tranquilidade.</p>
+        </div>
+        <div class="steps">
+          <article class="step"><div class="step-num">01</div><h3>Escolha o passeio</h3><p>Explore as experiências e selecione a opção que combina com seu grupo.</p></article>
+          <article class="step"><div class="step-num">02</div><h3>Consulte a data</h3><p>Informe a data e o número de passageiros para verificar vagas e valores atualizados.</p></article>
+          <article class="step"><div class="step-num">03</div><h3>Solicite a reserva</h3><p>Envie seus dados para consultar a disponibilidade e receber a confirmação do operador.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="banner">
+          <div><h2>O mar está chamando.</h2><p>Escolha sua próxima experiência em Ilhabela e comece a planejar um dia especial.</p></div>
+          <a class="button button-light" href="#passeios">Ver passeios disponíveis&nbsp; →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <a class="brand" href="#inicio"><span class="brand-mark">≈</span><span>maré <small>ILHABELA · PASSEIOS AQUÁTICOS</small></span></a>
+          <p>Uma forma prática de descobrir passeios aquáticos e experiências pelo litoral de Ilhabela.</p>
+        </div>
+        <div class="footer-links"><a href="#passeios">Passeios</a><a href="#como-funciona">Como funciona</a><a href="mailto:contato@exemplo.com">Contato</a></div>
+      </div>
+      <div class="copyright">© <span id="year"></span> Maré Ilhabela. Protótipo de apresentação — nome, valores e opções sujeitos à validação do cliente.</div>
+    </div>
+  </footer>
+
+  <dialog id="bookingModal" aria-labelledby="modalTitle">
+    <div class="modal-head">
+      <div><h3 id="modalTitle">Consultar passeio</h3><p>Preencha seus dados para demonstrar o fluxo de reserva.</p></div>
+      <button class="close" type="button" aria-label="Fechar janela" id="closeModal">×</button>
+    </div>
+    <div class="modal-body">
+      <form id="bookingForm">
+        <div class="modal-fields">
+          <div class="field full"><label for="chosenTour">Passeio</label><input id="chosenTour" name="passeio" readonly></div>
+          <div class="field"><label for="bookingDate">Data desejada</label><input id="bookingDate" name="data" type="date" required></div>
+          <div class="field"><label for="bookingPeople">Passageiros</label><select id="bookingPeople" name="passageiros" required><option>1</option><option selected>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div>
+          <div class="field"><label for="customerName">Seu nome</label><input id="customerName" name="nome" autocomplete="name" placeholder="Nome completo" required></div>
+          <div class="field"><label for="customerEmail">E-mail</label><input id="customerEmail" name="email" type="email" autocomplete="email" placeholder="voce@email.com" required></div>
+        </div>
+        <p class="form-help">Esta é uma demonstração visual. O formulário ainda não envia nem salva reservas; será necessário integrar o backend e a disponibilidade real.</p>
+        <button class="button button-primary" type="submit" style="width:100%">Simular solicitação</button>
+        <div class="notice" id="notice" role="status"></div>
+      </form>
+    </div>
+  </dialog>
+
+  <script>
+    const cards = [...document.querySelectorAll('.card')];
+    const filterButtons = [...document.querySelectorAll('.filter')];
+    const typeSelect = document.getElementById('tipo');
+    const peopleSelect = document.getElementById('pessoas');
+    const emptyState = document.getElementById('emptyState');
+    const bookingModal = document.getElementById('bookingModal');
+    const bookingForm = document.getElementById('bookingForm');
+    let activeFilter = 'todos';
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const today = new Date();
+    const localToday = new Date(today.getTime() - today.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+    document.getElementById('data').min = localToday;
+    document.getElementById('bookingDate').min = localToday;
+
+    function applyFilters() {
+      const selectedType = typeSelect.value !== 'todos' ? typeSelect.value : activeFilter;
+      const people = Number(peopleSelect.value || 1);
+      let visible = 0;
+      cards.forEach(card => {
+        const matchesType = selectedType === 'todos' || card.dataset.type === selectedType;
+        const matchesCapacity = people <= Number(card.dataset.capacity);
+        card.style.display = matchesType && matchesCapacity ? '' : 'none';
+        if (matchesType && matchesCapacity) visible++;
+      });
+      emptyState.style.display = visible ? 'none' : 'block';
+      filterButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.filter === selectedType));
+    }
+
+    filterButtons.forEach(button => button.addEventListener('click', () => {
+      activeFilter = button.dataset.filter;
+      typeSelect.value = 'todos';
+      applyFilters();
+    }));
+    typeSelect.addEventListener('change', () => { activeFilter = 'todos'; applyFilters(); });
+    peopleSelect.addEventListener('change', applyFilters);
+
+    document.getElementById('searchForm').addEventListener('submit', event => {
+      event.preventDefault();
+      applyFilters();
+      document.getElementById('passeios').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.querySelectorAll('.reserve-btn').forEach(button => button.addEventListener('click', () => {
+      document.getElementById('chosenTour').value = button.dataset.name;
+      document.getElementById('bookingPeople').value = peopleSelect.value;
+      document.getElementById('bookingDate').value = document.getElementById('data').value;
+      document.getElementById('notice').style.display = 'none';
+      bookingModal.showModal();
+    }));
+
+    document.getElementById('closeModal').addEventListener('click', () => bookingModal.close());
+    bookingModal.addEventListener('click', event => {
+      if (event.target === bookingModal) bookingModal.close();
+    });
+
+    bookingForm.addEventListener('submit', event => {
+      event.preventDefault();
+      const formData = new FormData(bookingForm);
+      const notice = document.getElementById('notice');
+      notice.textContent = `Solicitação demonstrativa preenchida para ${formData.get('passeio')} em ${formData.get('data')}. Nenhuma reserva foi enviada ou confirmada.`;
+      notice.style.display = 'block';
+    });
+
+    applyFilters();
+  </script>
+</body>
+</html>
